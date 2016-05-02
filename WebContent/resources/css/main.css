@@ -40,8 +40,10 @@ p.error {
 }
 
 table.offers {
-	padding: 20px;
+	text-align: center;
+	padding: 10px;
 	border: 1px solid gray;
+	border-spacing: 10px;
 }
 
 .valid {
@@ -75,7 +77,16 @@ a.login {
 	color: white;
 }
 
+form.login {
+	position: absolute;
+	top: 10px;
+	right: 30px;
+	color: white;
+}
+
 a.title {
 	color: white;
 	font-size: 30px;
+    text-decoration: none !important;
+    font-family: Arial, Helvetica, sans-serif;
 }

@@ -11,6 +11,9 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/static/script/jquery-1.12.3.js"></script>
 
+
+<tiles:insertAttribute name="includes"></tiles:insertAttribute>
+
 </head>
 <body>
 	<div class="header">
@@ -19,7 +22,7 @@
 	<div class="content">
 		<tiles:insertAttribute name="content"></tiles:insertAttribute>
 	</div>
-	<hr/>
+	<hr />
 	<div class="footer">
 		<tiles:insertAttribute name="footer"></tiles:insertAttribute>
 	</div>
