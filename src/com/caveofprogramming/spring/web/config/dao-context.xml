@@ -24,7 +24,4 @@
 
 		<tx:annotation-driven />
 	</beans>
-	<beans profile="">
-	
-	</beans>
 </beans>
