@@ -51,21 +51,22 @@ public class OffersDaoTests {
 		User user = new User("akbar", "Akbar Hirani", "123456",
 				"akbar@123.com", true, "user");
 
-		assertTrue("USer creation should return true", userDao.create(user));
+		assertTrue("User creation should return true", userDao.create(user));
 
 		Offer offer = new Offer(user, "user");
 
-		assertTrue("USer creation should return true", offersDao.create(offer));
+		assertTrue("Offer creation should return true", offersDao.create(offer));
 
 		List<Offer> offers = offersDao.getOffers();
 
 		assertEquals("Number of users should be 1", 1, offers.size());
 
-		assertEquals("Created user should be identical to retreived user",
+		assertEquals("Created offer should be identical to retreived offer",
 				offer, offers.get(0));
 
 		offer = offers.get(0);
 		offer.setText("New text.");
+		
 		assertTrue("Offer update should be true.", offersDao.update(offer));
 
 		Offer updated = offersDao.getOffer(offer.getId());
@@ -73,10 +74,25 @@ public class OffersDaoTests {
 		assertEquals("Updated offer should match retreived updated offer.",
 				offer, updated);
 
+		//Test get by ID
+		Offer offer2 = new Offer(user, "This is a test offer.");
+
+		assertTrue("Offer 2 creation should return true.", offersDao.create(offer2));
+
+		List<Offer> list2 = offersDao.getOffers();
+
+		for(Offer current : list2){
+			Offer retreived = offersDao.getOffer(current.getId());
+			
+			assertEquals("Offer by ID should match offer from list", current, retreived);
+		}
+		
+		//Test deletion
 		offersDao.delete(offer.getId());
+		
 		List<Offer> empty = offersDao.getOffers();
 
-		assertEquals("Number of offers should be 0.", 0, empty.size());
+		assertEquals("Number of offers should be 1.", 1, empty.size());
 	}
 
 }
