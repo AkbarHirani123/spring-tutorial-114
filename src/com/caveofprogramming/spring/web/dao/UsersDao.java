@@ -36,14 +36,11 @@ public class UsersDao {
 		params.addValue("email", user.getEmail());
 		params.addValue("enabled", user.isEnabled());
 		params.addValue("authority", user.getAuthority());
+		params.addValue("name", user.getName());
 
-		jdbc.update(
-				"insert into users (username, password, email, enabled) values (:username, :password, :email, :enabled)",
-				params);
-
-		return jdbc
-				.update("insert into authorities (username, authority) values (:username, :authority)",
-						params) == 1;
+		return jdbc.update(
+				"insert into users (username, name, password, email, enabled, authority) values (:username, :name, :password, :email, :enabled, :authority)",
+				params) == 1;
 	}
 
 	public boolean exists(String username) {
@@ -55,7 +52,7 @@ public class UsersDao {
 	public List<User> getAllUsers() {
 		// TODO Auto-generated method stub
 		return jdbc
-				.query("select * from users, authorities where users.username = authorities.username",
+				.query("select * from users",
 						BeanPropertyRowMapper.newInstance(User.class));
 	}
 }

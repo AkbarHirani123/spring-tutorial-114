@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OffersDao {
 
 	private NamedParameterJdbcTemplate jdbc;
-	
+
 	@Autowired
 	public void setDataSource(DataSource jdbc) {
 		this.jdbc = new NamedParameterJdbcTemplate(jdbc);
@@ -28,46 +28,62 @@ public class OffersDao {
 
 	public List<Offer> getOffers() {
 
-		return jdbc.query("select * from offer", new RowMapper<Offer>() {
+		return jdbc
+				.query("select * from offer, users where offer.username=users.username and users.enabled=true",
+						new RowMapper<Offer>() {
 
-			public Offer mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Offer offer = new Offer();
+							public Offer mapRow(ResultSet rs, int rowNum)
+									throws SQLException {
 
-				offer.setId(rs.getInt("id"));
-				offer.setName(rs.getString("name"));
-				offer.setText(rs.getString("text"));
-				offer.setEmail(rs.getString("email"));
+								User user = new User();
+								user.setAuthority(rs.getString("authority"));
+								user.setEmail(rs.getString("email"));
+								user.setEnabled(true);
+								user.setName(rs.getString("name"));
+								user.setUsername(rs.getString("username"));
 
-				return offer;
-			}
+								Offer offer = new Offer();
+								offer.setId(rs.getInt("id"));
+								offer.setText(rs.getString("text"));
+								offer.setUser(user);
 
-		});
+								return offer;
+							}
+
+						});
 	}
-	
+
 	public boolean update(Offer offer) {
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(offer);
-		
-		return jdbc.update("update offer set name=:name, text=:text, email=:email where id=:id", params) == 1;
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(
+				offer);
+
+		return jdbc.update("update offer set text=:text where id=:id", params) == 1;
 	}
-	
+
 	public boolean create(Offer offer) {
-		
-		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(offer);
-		
-		return jdbc.update("insert into offer (name, text, email) values (:name, :text, :email)", params) == 1;
+
+		BeanPropertySqlParameterSource params = new BeanPropertySqlParameterSource(
+				offer);
+
+		return jdbc.update(
+				"insert into offer (text, username) values (:text, :username)",
+				params) == 1;
 	}
-	
+
 	@Transactional
 	public int[] create(List<Offer> offers) {
-		
-		SqlParameterSource[] params = SqlParameterSourceUtils.createBatch(offers.toArray());
-		
-		return jdbc.batchUpdate("insert into offer (id, name, text, email) values (:id, :name, :text, :email)", params);
+
+		SqlParameterSource[] params = SqlParameterSourceUtils
+				.createBatch(offers.toArray());
+
+		return jdbc.batchUpdate(
+				"insert into offer (text, username) values (:text, :username)",
+				params);
 	}
-	
+
 	public boolean delete(int id) {
 		MapSqlParameterSource params = new MapSqlParameterSource("id", id);
-		
+
 		return jdbc.update("delete from offer where id=:id", params) == 1;
 	}
 
@@ -76,22 +92,29 @@ public class OffersDao {
 		MapSqlParameterSource params = new MapSqlParameterSource();
 		params.addValue("id", id);
 
-		return jdbc.queryForObject("select * from offer where id=:id", params,
-				new RowMapper<Offer>() {
+		return jdbc
+				.queryForObject(
+						"select * from offer, users where offer.id=:id and offer.username=users.username and users.enabled=true",
+						params, new RowMapper<Offer>() {
 
-					public Offer mapRow(ResultSet rs, int rowNum)
-							throws SQLException {
-						Offer offer = new Offer();
+							public Offer mapRow(ResultSet rs, int rowNum)
+									throws SQLException {
+								User user = new User();
+								user.setAuthority(rs.getString("authority"));
+								user.setEmail(rs.getString("email"));
+								user.setEnabled(true);
+								user.setName(rs.getString("name"));
+								user.setUsername(rs.getString("username"));
 
-						offer.setId(rs.getInt("id"));
-						offer.setName(rs.getString("name"));
-						offer.setText(rs.getString("text"));
-						offer.setEmail(rs.getString("email"));
+								Offer offer = new Offer();
+								offer.setId(rs.getInt("id"));
+								offer.setText(rs.getString("text"));
+								offer.setUser(user);
 
-						return offer;
-					}
+								return offer;
+							}
 
-				});
+						});
 	}
-	
+
 }

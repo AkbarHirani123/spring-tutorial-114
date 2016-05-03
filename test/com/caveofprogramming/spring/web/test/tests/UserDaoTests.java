@@ -38,12 +38,11 @@ public class UserDaoTests {
 		
 		jdbc.execute("delete from offer");
 		jdbc.execute("delete from users");
-		jdbc.execute("delete from authorities");
 	}
 
 	@Test
 	public void testCreateUser() {
-		User user = new User("akbar","123456","akbar@123.com",true,"user");
+		User user = new User("akbar","Akbar Hirani","123456","akbar@123.com",true,"user");
 		
 		assertTrue("USer creation should return true",userDao.create(user));
 		
