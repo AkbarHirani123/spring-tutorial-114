@@ -4,14 +4,36 @@
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
 
-<p>
-	<a href="${pageContext.request.contextPath}/offers">Show current
-		offers.</a>
-</p>
-<p>
-	<a href="${pageContext.request.contextPath}/createoffer">Add a new
-		offer.</a>
-</p>
+<table class="offers">
+	<tr>
+		<td><b>Name</b></td>
+		<td><b>Email</b></td>
+		<td><b>Offer</b></td>
+	</tr>
+
+	<c:forEach var="offer" items="${offers}">
+		<tr>
+			<td><c:out value="${offer.user.name}"></c:out></td>
+			<td><c:out value="${offer.user.email}"></c:out></td>
+			<td><c:out value="${offer.text}"></c:out></td>
+		</tr>
+	</c:forEach>
+</table>
+<c:choose>
+	<c:when test="${hasOffer}">
+		<p>
+			<a href="${pageContext.request.contextPath}/createoffer">Edit or
+				delete your current offer.</a>
+		</p>
+	</c:when>
+	<c:otherwise>
+		<p>
+			<a href="${pageContext.request.contextPath}/createoffer">Add a
+				new offer.</a>
+		</p>
+	</c:otherwise>
+</c:choose>
+
 
 <sec:authorize access="hasAuthority('ROLE_ADMIN')">
 	<p>
