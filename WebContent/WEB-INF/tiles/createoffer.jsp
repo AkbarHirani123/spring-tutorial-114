@@ -5,6 +5,7 @@
 <sf:form method="post"
 	action="${pageContext.request.contextPath}/docreate"
 	commandName="offer">
+	<sf:input type="hidden" name="id" path="id" />
 
 	<table class="formtable">
 		<tr>
@@ -15,7 +16,7 @@
 		</tr>
 		<tr>
 			<td class="label"></td>
-			<td><input class="control" value="Create advert" type="submit" /></td>
+			<td><input class="control" value="Save Advert" type="submit" /></td>
 		</tr>
 	</table>
 

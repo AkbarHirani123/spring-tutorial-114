@@ -34,7 +34,7 @@ public class HomeController {
 		}
 		
 		model.addAttribute("hasOffer", hasOffer);
-		System.out.println(hasOffer);
+		
 		return "home";
 	}
 
