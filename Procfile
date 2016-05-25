@@ -1,1 +1,1 @@
-web:    java -jar target/dependency/webapp-runner.jar target/spring-tutorial-114.war
+web: java $JAVA_OPTS -cp target/classes:target/dependency/spring-tutorial-114.war com.caveofprogramming.spring.web
